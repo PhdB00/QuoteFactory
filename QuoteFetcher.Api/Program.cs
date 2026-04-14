@@ -24,3 +24,6 @@ app.MapGetQuoteEndpoint();
 
 await app.RunAsync();
 
+// Make Program class accessible for integration tests
+public partial class Program { }
+

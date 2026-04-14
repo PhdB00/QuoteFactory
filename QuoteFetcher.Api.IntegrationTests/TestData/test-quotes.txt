@@ -1,0 +1,11 @@
+animal|Animal quote 1
+animal|Animal quote 2
+animal|Animal quote 3
+science|Science quote 1
+science|Science quote 2
+sport|Sport quote 1
+sport|Sport quote 2
+sport|Sport quote 3
+sport|Sport quote 4
+food|Food quote 1
+money|Money quote 1

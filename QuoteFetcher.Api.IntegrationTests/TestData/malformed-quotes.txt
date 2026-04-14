@@ -1,0 +1,3 @@
+animal|Valid quote 1
+this line has no pipe separator
+science|Valid quote 2

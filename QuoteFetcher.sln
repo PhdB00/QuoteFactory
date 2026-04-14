@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuoteFetcher.Client.Console
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuoteFetcher.Api", "QuoteFetcher.Api\QuoteFetcher.Api.csproj", "{E72E65FF-6A08-46D2-80E1-06A49FB079EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuoteFetcher.Api.IntegrationTests", "QuoteFetcher.Api.IntegrationTests\QuoteFetcher.Api.IntegrationTests.csproj", "{07C413C9-B76B-4B78-B311-3919A948C986}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{E72E65FF-6A08-46D2-80E1-06A49FB079EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E72E65FF-6A08-46D2-80E1-06A49FB079EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E72E65FF-6A08-46D2-80E1-06A49FB079EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07C413C9-B76B-4B78-B311-3919A948C986}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07C413C9-B76B-4B78-B311-3919A948C986}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07C413C9-B76B-4B78-B311-3919A948C986}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07C413C9-B76B-4B78-B311-3919A948C986}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,5 +69,6 @@ Global
 		{6DFB3359-1F4F-47A4-BB22-B64284A269B4} = {C5F708DB-01C4-417C-8058-1027C665CB11}
 		{95DB3FEE-9B87-4667-82CD-2DB3E7F36BCF} = {2C7CE744-D8F6-477E-86EC-06795C053259}
 		{E72E65FF-6A08-46D2-80E1-06A49FB079EA} = {2C7CE744-D8F6-477E-86EC-06795C053259}
+		{07C413C9-B76B-4B78-B311-3919A948C986} = {C5F708DB-01C4-417C-8058-1027C665CB11}
 	EndGlobalSection
 EndGlobal
