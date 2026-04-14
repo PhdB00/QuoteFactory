@@ -1,0 +1,35 @@
+# --- Visual Studio ---
+.vs/
+[Bb]in/
+[Oo]bj/
+/[Pp]ackages/
+*.user
+*.userosscache
+*.sln.docstates
+
+# --- JetBrains Rider ---
+.idea/
+*.sln.iml
+
+# --- General .NET / MSBuild ---
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.patch
+*.diff
+
+# --- User-specific files ---
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# --- OS generated files ---
+.DS_Store
+Thumbs.db
+
+# --- Databases ---
+/AppData/*.mdf
+/AppData/*.ldf

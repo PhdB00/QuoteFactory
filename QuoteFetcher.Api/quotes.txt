@@ -1,0 +1,157 @@
+animal|“We need another and a wiser and perhaps a more mystical concept of animals.” — Henry Beston
+animal|“An animal's eyes have the power to speak a great language.” — Martin Buber
+animal|“Animals are such agreeable friends - they ask no questions, they pass no criticisms.” — George Eliot
+animal|“The lower animals, like man, manifestly feel pleasure and pain, happiness and misery.” — Charles Darwin
+animal|“This shews that animals not only love, but have the desire to be loved.” — Charles Darwin
+animal|“Until he extends the circle of his compassion to all living things, man will not himself find peace.” — Albert Schweitzer
+animal|“Mankind's true moral test, its fundamental test ... consists of its attitude toward those who are at its mercy: animals.” — Milan Kundera
+animal|“I believe that animals have rights which, although different from our own, are just as inalienable.” — Roger Caras
+animal|“Animals are born, are sentient and are mortal.” — John Berger
+animal|“Love the animals: God has given them the rudiments of thought and untroubled joy.” — Fyodor Dostoyevsky
+animal|“Animals are not here for us to do as we please with.” — Ricky Gervais
+animal|“Animals are the main victims of history...” — Yuval Noah Harari
+animal|“All animals are equal — but some animals are more equal than others.” — George Orwell
+animal|“Four legs good, two legs bad.” — George Orwell
+animal|“Animals are among the first inhabitants of the mind's eye.” — Paul Shepard
+animal|“It is just like man's vanity and impertinence to call an animal dumb because it is dumb to his dull perceptions.” — Mark Twain
+animal|“There are two things for which animals are to be envied: they know nothing of future evils, or of what people say about them.” — Voltaire
+animal|“Compassion for animals is intimately connected with goodness of character...” — Arthur Schopenhauer
+animal|“We will one day think it as horrible to eat animals as we now think it horrible to eat each other.” — Rose Scott
+animal|“The animals of the world exist for their own reasons.” — Alice Walker
+celebrity|“A celebrity is a person who works hard all his life to become known, then wears dark glasses to avoid being recognized.” — Fred Allen
+celebrity|“A celebrity is a person who is known for his well-knownness.” — Daniel J. Boorstin
+celebrity|“Celebrity-worship and hero-worship should not be confused.” — Daniel J. Boorstin
+celebrity|“A sign of a celebrity is often that his name is worth more than his services.” — Daniel J. Boorstin
+celebrity|“Celebrity is life in the third person.” — Siri Hustvedt
+celebrity|“In the future everyone will be world-famous for 15 minutes.” — Andy Warhol
+food|“Tell me what you eat, and I shall tell you what you are.” — Jean Anthelme Brillat-Savarin
+food|“There is no love sincerer than the love of food.” — George Bernard Shaw
+food|“One cannot think well, love well, sleep well, if one has not dined well.” — Virginia Woolf
+food|“The only time to eat diet food is while you're waiting for the steak to cook.” — Julia Child
+food|“‘Too much trouble,’ ‘Too expensive,’ or ‘Who will know the difference’ are death knells for good food.” — Julia Child
+food|“My, I get so depressed after a poor meal; that's why I can never stay in England for more than a week.” — Julia Child
+food|“Good bread is the most fundamentally satisfying of all foods; and good bread with fresh butter, the greatest of feasts.” — James Beard
+food|“A desert without cheese is like a beautiful woman missing an eye.” — Jean Anthelme Brillat-Savarin
+food|“Poets have been mysteriously silent on the subject of cheese.” — G. K. Chesterton
+food|“Cheese is the celebration of milk when it goes ‘off’ big-time-stylee.” — Stephen Fry
+food|“Good food is like music you can taste, color you can smell. There is excellence all around you. You need only to be aware to stop and savor it.” — Chef Auguste Gusteau
+food|“This much thou hast taught me: that I should learn to take food as medicine.” — Augustine
+food|“You must be careful about what you eat, unless you want your body making heart valves out of things like bean dip.” — Dave Barry
+food|“I wonder at those who think about their body's food, but do not think about their soul's food.” — Hasan ibn Ali
+jazz|“I think music itself is an idea. It’s not a style, it’s not a race, it’s just an idea.” — Ornette Coleman
+jazz|“There are three styles to music: improvising, composing and arranging. But all those styles use the same intervals.” — Ornette Coleman
+jazz|“Making music is like a form of religion for me, because it soothes your heart and increases the pleasure of your brain.” — Ornette Coleman
+jazz|“You practice so you can invent.” — Cecil Taylor
+jazz|“Sometimes when it goes really well, you wonder, ‘who’s that at the piano?’” — Cecil Taylor
+jazz|“To feel is the most terrifying thing in this society.” — Cecil Taylor
+jazz|“Music is not material. Music is Spiritual.” — Sun Ra
+jazz|“Freedom of Speech is Freedom of Music.” — Sun Ra
+jazz|“Music is a plane of wisdom, because music is a universal language.” — Sun Ra
+jazz|“It takes a motion to notion and it takes a notion to motion.” — Sun Ra
+jazz|“We are the music we play.” — Albert Ayler
+jazz|“You must know peace to give peace.” — Albert Ayler
+jazz|“I’m convinced, you see, that through music, life can be given more meaning.” — Albert Ayler
+jazz|“I hope to bring that spirit back into the music we’re playing.” — Albert Ayler
+jazz|“Playing with Taylor I began to be liberated from thinking about chords.” — Archie Shepp
+jazz|“Coltrane was perhaps the greatest radical of the avant-garde.” — Archie Shepp
+jazz|“I felt that I was somewhat politicized musically, radicalized by Cecil Taylor.” — Archie Shepp
+jazz|“The goal is not to make it perfect. The goal is to do the best you can do.” — Anthony Braxton
+jazz|“And if the subject is improvisation, and we’re talking about music improvisation, the last thing we need is to play what you already know.” — Anthony Braxton
+jazz|“The human voice is the instrument.” — Roscoe Mitchell
+jazz|“The only thing you can teach a student is how to learn.” — Roscoe Mitchell
+jazz|“The next step is to start with nothing and just create everything right then and there.” — Sam Rivers
+jazz|“Music can get involved where energy takes you to different places.” — Pharoah Sanders
+jazz|“In my music, I’m trying to play the truth of what I am.” — Charles Mingus
+jazz|“You can’t make anything go anywhere. It just happens.” — Thelonious Monk
+money|“Money is a terrible master but an excellent servant.” — P. T. Barnum
+money|“The lack of money is the root of all evil.” — Mark Twain
+money|“A wise person should have money in their head, but not in their heart.” — Jonathan Swift
+money|“Money often costs too much.” — Ralph Waldo Emerson
+money|“When I had money everyone called me brother.” — Polish proverb
+money|“Money is like muck, not good except it be spread.” — Francis Bacon
+money|“Money is power, freedom, a cushion, the root of all evil, the sum of blessings.” — Carl Sandburg
+money|“If you want to know what God thinks of money, just look at the people he gave it to.” — Dorothy Parker
+money|“A nickel ain’t worth a dime anymore.” — Yogi Berra
+money|“Money won is twice as sweet as money earned.” — Paul Newman
+money|“Money is only a tool. It will take you wherever you wish, but it will not replace you as the driver.” — Ayn Rand
+money|“Money never made a man happy yet, nor will it.” — Benjamin Franklin
+money|“A man in debt is so far a slave.” — Ralph Waldo Emerson
+money|“Money and women are the most sought after and the least known about of any two things we have.” — Will Rogers
+money|“All the money you made will never buy back your soul.” — Bob Dylan
+money|“Money is better than poverty, if only for financial reasons.” — Woody Allen
+money|“Money is not the most important thing in the world. Love is. Fortunately, I love money.” — Jackie Mason
+money|“Money can’t buy friends, but you can get a better class of enemy.” — Spike Milligan
+money|“Money is like manure. You have to spread it around or it smells.” — J. Paul Getty
+money|“The safe way to double your money is to fold it over once and put it in your pocket.” — Kin Hubbard
+money|“I’d like to live as a poor man with lots of money.” — Pablo Picasso
+money|“That money talks, I’ll not deny, I heard it once: It said, ‘Goodbye.’” — Richard Armour
+money|“Too many people spend money they earned to buy things they don’t want to impress people that they don’t like.” — Will Rogers
+money|“It is better to have a permanent income than to be fascinating.” — Oscar Wilde
+money|“Formal education will make you a living; self-education will make you a fortune.” — Jim Rohn
+politics|“Politics is people.” — Anonymous
+politics|“Patriotism is in political life what faith is in religion.” — Lord Acton
+politics|“All power tends to corrupt, and absolute power corrupts absolutely.” — Lord Acton
+politics|“Liberty is not a means to a higher political end. It is itself the highest political end.” — Lord Acton
+politics|“Man is by nature a political animal.” — Aristotle
+politics|“POLITICS, n. A strife of interests masquerading as a contest of principles.” — Ambrose Bierce
+politics|“POLITICS, n. The conduct of public affairs for private advantage.” — Ambrose Bierce
+politics|“In politics, you have your word and your friends; go back on either and you're dead.” — Morton C. Blackwell
+politics|“In politics, nothing moves unless it's pushed.” — Morton C. Blackwell
+politics|“Moral outrage is the most powerful motivating force in politics.” — Morton C. Blackwell
+politics|“Politics is not an exact science.” — Otto von Bismarck
+politics|“Politics is the art of the possible.” — Otto von Bismarck
+politics|“Too bad all the people who know how to run the country are busy driving taxi cabs and cutting hair.” — George Burns
+politics|“Finality is not the language of politics.” — Benjamin Disraeli
+politics|“It is because politics is more difficult than physics.” — Albert Einstein
+politics|“Politics ought to be the part-time profession of every citizen who would protect the rights and privileges of free people and who would preserve what is good and fruitful in our national heritage.” — Dwight D. Eisenhower
+politics|“Practical politics consists in ignoring facts.” — Henry Adams
+politics|“The whole aim of practical politics is to keep the populace alarmed (and hence clamorous to be led to safety) by menacing it with an endless series of hobgoblins, all of them imaginary.” — H. L. Mencken
+politics|“Politics is not the art of the possible. It consists in choosing between the disastrous and the unpalatable.” — John Kenneth Galbraith
+politics|“Politics is supposed to be the second oldest profession. I have come to realize that it bears a very close resemblance to the first.” — Ronald Reagan
+politics|“Politics is the art of preventing people from taking part in affairs which properly concern them.” — Paul Valéry
+politics|“The most practical kind of politics is the politics of decency.” — Theodore Roosevelt
+politics|“There is hardly a political question in the United States which does not sooner or later turn into a judicial one.” — Alexis de Tocqueville
+politics|“Politics is a fascinating game, because politics is government. It is the art of government.” — Harry S. Truman
+politics|“Politics is perhaps the only profession for which no preparation is thought necessary.” — Robert Louis Stevenson
+religion|“Faith is taking the first step even when you don't see the whole staircase.” — Martin Luther King Jr.
+religion|“Faith is to believe what you do not see; the reward of this faith is to see what you believe.” — Augustine of Hippo
+religion|“The function of prayer is not to influence God, but rather to change the nature of the one who prays.” — Søren Kierkegaard
+religion|“To be a Christian means to forgive the inexcusable because God has forgiven the inexcusable in you.” — C. S. Lewis
+religion|“My religion is very simple. My religion is kindness.” — Dalai Lama XIV
+religion|“The essence of all religions is one. Only their approaches are different.” — Mahatma Gandhi
+religion|“Prayer is not asking. It is a longing of the soul.” — Mahatma Gandhi
+religion|“Doubt is not the opposite of faith; it is one element of faith.” — Paul Tillich
+religion|“Science without religion is lame, religion without science is blind.” — Albert Einstein
+religion|“Prayer is an act of love; words are not needed.” — Mother Teresa
+religion|“There is not in the world a kind of life more sweet and delightful than that of a continual conversation with God.” — Brother Lawrence
+religion|“The world is charged with the grandeur of God.” — Gerard Manley Hopkins
+religion|“Just to be is a blessing. Just to live is holy.” — Abraham Joshua Heschel
+religion|“Religion is the opium of the people.” — Karl Marx
+religion|“Men never do evil so completely and cheerfully as when they do it from religious conviction.” — Blaise Pascal
+religion|“Those who can make you believe absurdities can make you commit atrocities.” — Voltaire
+religion|“The easy confidence with which I know another man's religion is folly teaches me to suspect that my own is also.” — Mark Twain
+religion|“Religion. A daughter of Hope and Fear, explaining to Ignorance the nature of the Unknowable.” — Ambrose Bierce
+religion|“I do not believe in God because I do not believe in Mother Goose.” — Clarence Darrow
+religion|“Properly read, the Bible is the most potent force for atheism ever conceived.” — Isaac Asimov
+religion|“Is man merely a mistake of God's? Or God merely a mistake of man?” — Friedrich Nietzsche
+religion|“Religion is excellent stuff for keeping common people quiet.” — Napoleon Bonaparte
+religion|“With or without religion, good people can behave well and bad people can do evil; but for good people to do evil — that takes religion.” — Steven Weinberg
+religion|“Faith is the great cop-out, the great excuse to evade the need to think and evaluate evidence.” — Richard Dawkins
+religion|“Human decency is not derived from religion. It precedes it.” — Christopher Hitchens
+science|“Imagination is more important than knowledge. Knowledge is limited. Imagination encircles the world.” — Albert Einstein
+science|“Science is the belief in the ignorance of experts.” — Richard Feynman
+science|“The most exciting phrase to hear in science, the one that heralds new discoveries, is not ‘Eureka!’ but ‘That’s funny...’” — Isaac Asimov
+science|“Science is much more than a body of knowledge. It is a way of thinking.” — Carl Sagan
+science|“At the heart of science is an essential balance between two seemingly contradictory attitudes—an openness to new ideas, no matter how bizarre or counterintuitive, and the most ruthlessly skeptical scrutiny of all ideas, old and new.” — Carl Sagan
+science|“In questions of science, the authority of a thousand is not worth the humble reasoning of a single individual.” — Galileo Galilei
+science|“In the fields of observation chance favors only the prepared mind.” — Louis Pasteur
+science|“Nothing in life is to be feared, it is only to be understood.” — Marie Curie
+science|“Any sufficiently advanced technology is indistinguishable from magic.” — Arthur C. Clarke
+science|“One thing about science: it works.” — Chad Oliver
+science|“Science is not everything, but science is very beautiful.” — J. Robert Oppenheimer
+science|“Science is the only way we have of separating the truth from ideology, or fraud, or mere foolishness.” — Robert L. Park
+science|“Not explaining science seems to me perverse. When you're in love, you want to tell the world.” — Carl Sagan
+science|“In science, one can learn the most by studying what seems the least.” — Marvin Minsky
+sport|“Sports do not build character. They reveal it.” — Heywood Broun
+sport|“The more difficult the victory, the greater the happiness in winning.” — Pelé
+sport|“The difference between the impossible and the possible lies in a person’s determination.” — Tommy Lasorda
