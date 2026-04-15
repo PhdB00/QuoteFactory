@@ -10,10 +10,12 @@ let bubbles = [];
 let animationFrameId = null;
 let spatialGrid = null;
 let errorTimeoutId = null;
+let nextBubbleId = 0;
 
 // Bubble class
 class Bubble {
     constructor(category, x, y) {
+        this.id = nextBubbleId++;
         this.category = category;
         this.x = x;
         this.y = y;
@@ -224,7 +226,9 @@ function animate() {
         nearby.forEach(other => {
             if (bubble !== other) {
                 // Create unique pair key to avoid checking same pair twice
-                const pairKey = bubble < other ? `${bubbles.indexOf(bubble)},${bubbles.indexOf(other)}` : `${bubbles.indexOf(other)},${bubbles.indexOf(bubble)}`;
+                const idA = bubble.id;
+                const idB = other.id;
+                const pairKey = idA < idB ? `${idA},${idB}` : `${idB},${idA}`;
                 if (!checked.has(pairKey)) {
                     checked.add(pairKey);
                     if (checkCollision(bubble, other)) {
