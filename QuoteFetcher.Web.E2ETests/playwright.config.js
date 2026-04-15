@@ -4,7 +4,7 @@ const { defineConfig, devices } = require('@playwright/test');
 /**
  * Read environment variables for configuration
  */
-const WEB_BASE_URL = process.env.WEB_BASE_URL || 'http://localhost:5000';
+const WEB_BASE_URL = process.env.WEB_BASE_URL || 'http://localhost:5001';
 const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:5074';
 
 /**
@@ -40,6 +40,9 @@ module.exports = defineConfig({
 
   /* Shared settings for all the projects below */
   use: {
+    /* security header (Content-Security-Policy) blocks Playwright's route interception mechanism. */
+    bypassCSP: true,
+    
     /* Base URL to use in actions like `await page.goto('/')` */
     baseURL: WEB_BASE_URL,
 

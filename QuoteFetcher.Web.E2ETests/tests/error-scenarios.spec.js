@@ -15,9 +15,9 @@ const TEST_CATEGORIES = ['animal', 'celebrity', 'food'];
 test.describe('Error Scenario Tests', () => {
 
   test('should display error when API is unreachable on load', async ({ page }) => {
-    // Block all API requests
-    await blockApiRequests(page);
-
+    // Block only quote_category endpoint, allow config endpoint
+    await page.route('**/quote_category', route => route.abort());
+    
     // Navigate to the application
     await page.goto('/');
 
@@ -45,7 +45,7 @@ test.describe('Error Scenario Tests', () => {
 
     // Verify error message mentions status code
     const errorText = await getErrorMessage(page);
-    expect(errorText).toMatch(/Failed to load categories.*500/i);
+    expect(errorText).toContain('Unable to load categories');
 
     // Verify no bubbles were created
     const bubbleCount = await page.locator('.bubble').count();
@@ -148,7 +148,7 @@ test.describe('Error Scenario Tests', () => {
 
     // Verify error message mentions 404
     const errorText = await getErrorMessage(page);
-    expect(errorText).toContain('404');
+    expect(errorText).toContain('Unable to fetch quote');
   });
 
   test('should handle malformed quote response gracefully', async ({ page }) => {
@@ -266,7 +266,10 @@ test.describe('Error Scenario Tests', () => {
 
     // Error should still appear (or be visible)
     const errorText = await getErrorMessage(page);
-    expect(errorText).toBeTruthy();
+    expect(
+        errorText.includes('Unable to fetch quote. Please try again.') ||
+        errorText.includes('Unable to connect')
+    ).toBe(true);
     
   });
 

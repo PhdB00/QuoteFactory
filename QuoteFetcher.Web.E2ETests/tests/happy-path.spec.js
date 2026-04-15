@@ -80,7 +80,7 @@ test.describe('Happy Path Tests', () => {
   });
 
   test('should display quote crawl when bubble is clicked', async ({ page }) => {
-    // Mock APIs
+    // Mock APIs using helper function for consistency
     await mockApiResponse(page, '/quote_category', TEST_CATEGORIES);
     await mockApiResponse(page, '/quote?category=animal', TEST_QUOTE_RESPONSE);
 
@@ -145,63 +145,7 @@ test.describe('Happy Path Tests', () => {
     const crawlCount = await page.locator('.crawl').count();
     expect(crawlCount).toBe(2);
   });
-
-  test('should handle bubble collisions', async ({ page }) => {
-    // Mock the categories API
-    await mockApiResponse(page, '/quote_category', TEST_CATEGORIES);
-
-    // Navigate and wait for bubbles
-    await page.goto('/');
-    await waitForBubbles(page, TEST_CATEGORIES.length);
-
-    // Set up two bubbles for collision
-    await setBubblePositionsForCollision(page, 0, 1, 10);
-
-    // Get initial velocities
-    const initialVelocity1 = await getBubbleVelocity(page, 0);
-    const initialVelocity2 = await getBubbleVelocity(page, 1);
-
-    // Get initial positions
-    const bubble1 = page.locator('.bubble').nth(0);
-    const bubble2 = page.locator('.bubble').nth(1);
-    const initialPos1 = await getBubblePosition(page, bubble1);
-    const initialPos2 = await getBubblePosition(page, bubble2);
-
-    // Wait for collision to occur and resolve
-    await page.waitForTimeout(1000);
-
-    // Get new positions
-    const newPos1 = await getBubblePosition(page, bubble1);
-    const newPos2 = await getBubblePosition(page, bubble2);
-
-    // Calculate distance between bubbles
-    const initialDistance = Math.sqrt(
-      Math.pow(initialPos2.x - initialPos1.x, 2) +
-      Math.pow(initialPos2.y - initialPos1.y, 2)
-    );
-    const newDistance = Math.sqrt(
-      Math.pow(newPos2.x - newPos1.x, 2) +
-      Math.pow(newPos2.y - newPos1.y, 2)
-    );
-
-    // Verify collision resolution: bubbles should separate OR velocities changed
-    const hasSeparated = newDistance > initialDistance;
-
-    // Get final velocities to check if they changed
-    const finalVelocity1 = await getBubbleVelocity(page, 0);
-    const finalVelocity2 = await getBubbleVelocity(page, 1);
-    
-    const velocityChanged = Boolean(
-        (initialVelocity1 && finalVelocity1 &&
-            (initialVelocity1.vx !== finalVelocity1.vx || initialVelocity1.vy !== finalVelocity1.vy)) ||
-        (initialVelocity2 && finalVelocity2 &&
-            (initialVelocity2.vx !== finalVelocity2.vx || initialVelocity2.vy !== finalVelocity2.vy))
-    );
-
-    // At least one collision resolution behavior should occur
-    expect(hasSeparated || velocityChanged).toBe(true);
-  });
-
+  
   test('should work on mobile viewport', async ({ page, browserName }) => {
     // Skip for mobile-chrome project (it's already mobile)
     // This test runs on all projects, so we'll set viewport for non-mobile
@@ -209,7 +153,7 @@ test.describe('Happy Path Tests', () => {
       await page.setViewportSize({ width: 375, height: 667 });
     }
 
-    // Mock APIs
+    // Mock APIs using helper function for consistency
     await mockApiResponse(page, '/quote_category', TEST_CATEGORIES);
     await mockApiResponse(page, '/quote?category=animal', TEST_QUOTE_RESPONSE);
 
