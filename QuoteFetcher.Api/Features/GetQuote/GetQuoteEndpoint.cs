@@ -4,6 +4,13 @@ public static class GetQuoteEndpoint
 {
     public static void MapGetQuoteEndpoint(this IEndpointRouteBuilder app)
     {
+        // INTENTIONAL: Multiple issues in this endpoint that mirror the original assessment API:
+        // 1. No pagination support - returns only a single quote per request, forcing clients
+        //    to make multiple sequential calls for bulk operations (inefficient)
+        // 2. No input validation - category parameter is not validated against known categories,
+        //    invalid categories simply return 404 without helpful error messages
+        // 3. Random selection guarantees duplicates - pure random selection with no duplicate
+        //    prevention means multiple requests will often return the same quotes
         app.MapGet("/quote", (string? category, List<QuoteEntity> quotes) =>
         {
             var filteredQuotes = string.IsNullOrEmpty(category)
@@ -12,9 +19,8 @@ public static class GetQuoteEndpoint
 
             if (filteredQuotes.Count == 0)
                 return Results.NotFound();
-
-            var random = new Random();
-            var selectedQuote = filteredQuotes[random.Next(filteredQuotes.Count)];
+            
+            var selectedQuote = filteredQuotes[Random.Shared.Next(filteredQuotes.Count)];
 
             var quote = new Quote
             {

@@ -29,7 +29,7 @@ public class QuotesConfigurationTests
             using var factory = new TestWebApplicationFactory("nonexistent-file.txt");
             using var client = factory.CreateClient();
             // Trigger the service resolution which will throw
-            var response = client.GetAsync("/quote").Result;
+            _ = client.GetAsync("/quote").Result;
         });
     }
 
@@ -51,7 +51,7 @@ public class QuotesConfigurationTests
     {
         // Arrange
         var emptyFilePath = "TestData/empty-quotes.txt";
-        File.WriteAllText(emptyFilePath, string.Empty);
+        await File.WriteAllTextAsync(emptyFilePath, string.Empty);
 
         try
         {
