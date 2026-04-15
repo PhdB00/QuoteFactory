@@ -20,24 +20,6 @@ builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
-// Global exception handling middleware
-app.UseExceptionHandler(errorApp =>
-{
-    errorApp.Run(async context =>
-    {
-        context.Response.StatusCode = 500;
-        context.Response.ContentType = "application/json";
-
-        var errorResponse = new
-        {
-            error = "An unexpected error occurred.",
-            timestamp = DateTime.UtcNow
-        };
-
-        await context.Response.WriteAsJsonAsync(errorResponse);
-    });
-});
-
 // Environment-specific configuration
 if (app.Environment.IsDevelopment())
 {
@@ -45,12 +27,30 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
+    // Global exception handling middleware
+    app.UseExceptionHandler(errorApp =>
+    {
+        errorApp.Run(async context =>
+        {
+            context.Response.StatusCode = 500;
+            context.Response.ContentType = "application/json";
+
+            var errorResponse = new
+            {
+                error = "An unexpected error occurred.",
+                timestamp = DateTime.UtcNow
+            };
+
+            await context.Response.WriteAsJsonAsync(errorResponse);
+        });
+    });
+    
     // HSTS for production
     app.UseHsts();
 }
 
 // Security headers middleware
-app.Use(async (context, next) =>
+app.Use(async (HttpContext context, RequestDelegate next) =>
 {
     // Prevent clickjacking
     context.Response.Headers["X-Frame-Options"] = "DENY";
@@ -70,7 +70,7 @@ app.Use(async (context, next) =>
     context.Response.Headers["Content-Security-Policy"] =
         $"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' {apiBaseUrl}; object-src 'none'; base-uri 'self'; frame-ancestors 'none';";
 
-    await next();
+    await next(context);
 });
 
 // Enable default files (must be before UseStaticFiles)
