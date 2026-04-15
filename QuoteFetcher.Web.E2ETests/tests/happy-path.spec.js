@@ -33,8 +33,8 @@ test.describe('Happy Path Tests', () => {
     // Verify error message is hidden
     await expect(page.locator('#error-message')).toHaveClass(/hidden/);
 
-    // Verify bubble container exists
-    await expect(page.locator('#bubble-container')).toBeVisible();
+    // Verify bubble container exists and bubbles are loaded
+    await waitForBubbles(page, TEST_CATEGORIES.length);
   });
 
   test('should display bubbles for all categories returned by API', async ({ page }) => {

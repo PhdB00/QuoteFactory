@@ -8,9 +8,13 @@
 body {
     font-family: Arial, sans-serif;
     background: linear-gradient(to bottom, #0a0a0a 0%, #1a1a2e 100%);
-    overflow: hidden;
-    width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* Base font size for rem scaling */
+html {
+    font-size: 16px;
 }
 
 /* Bubble container */
@@ -26,17 +30,22 @@ body {
     /* Base position at 0,0 since we use transform for positioning */
     left: 0;
     top: 0;
-    padding: 15px 25px;
+    padding: 0.9375rem 1.5625rem;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 50px;
+    border-radius: 3.125rem;
     color: white;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
     user-select: none;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-    transition: box-shadow 0.2s;
+    box-shadow: 0 0.25rem 0.9375rem rgba(102, 126, 234, 0.4);
+    transition: box-shadow 0.2s, transform 0.2s;
     white-space: nowrap;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .bubble:hover {
@@ -66,16 +75,16 @@ body {
     bottom: -20%;
     left: 50%;
     width: 90%;
-    max-width: 900px;
+    max-width: 56.25rem;
     color: #feda4a;
-    font-size: 42px;
+    font-size: 2.625rem;
     font-weight: bold;
     text-align: justify;
     line-height: 1.8;
-    letter-spacing: 2px;
+    letter-spacing: 0.125rem;
     animation: crawl 25s linear forwards;
     transform-origin: 50% 100%;
-    text-shadow: 0 2px 10px rgba(254, 218, 74, 0.5);
+    text-shadow: 0 0.125rem 0.625rem rgba(254, 218, 74, 0.5);
 }
 
 @keyframes crawl {
@@ -100,16 +109,16 @@ body {
 /* Error message */
 .error-message {
     position: fixed;
-    top: 20px;
+    top: 1.25rem;
     left: 50%;
     transform: translateX(-50%);
-    padding: 15px 30px;
+    padding: 0.9375rem 1.875rem;
     background: rgba(220, 38, 38, 0.9);
     color: white;
-    border-radius: 8px;
-    font-size: 16px;
+    border-radius: 0.5rem;
+    font-size: 1rem;
     font-weight: bold;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0.25rem 0.9375rem rgba(0, 0, 0, 0.3);
     z-index: 1000;
     transition: opacity 0.3s ease;
 }
@@ -125,12 +134,41 @@ body {
 
 @keyframes bubble-click {
     0% {
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 0.25rem 0.9375rem rgba(102, 126, 234, 0.4);
     }
     50% {
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.8);
+        box-shadow: 0 0.5rem 1.5625rem rgba(102, 126, 234, 0.8);
     }
     100% {
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 0.25rem 0.9375rem rgba(102, 126, 234, 0.4);
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .crawl {
+        font-size: 1.5rem;
+        line-height: 1.5;
+        max-width: 95%;
+    }
+    
+    .bubble {
+        padding: 0.625rem 1.25rem;
+        font-size: 0.875rem;
+    }
+
+    #crawl-container {
+        perspective: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .crawl {
+        font-size: 1.25rem;
+    }
+    
+    .bubble {
+        padding: 0.5rem 1rem;
+        font-size: 0.8125rem;
     }
 }

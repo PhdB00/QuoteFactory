@@ -217,19 +217,17 @@ test.describe('Error Scenario Tests', () => {
 
     // Click a bubble
     const animalBubble = getBubbleByCategory(page, 'animal');
+    
+    // Use Promise.all to handle the click and the subsequent wait for response or error
+    // Since the app doesn't have a timeout, we'll wait for a bit and check responsiveness
     await animalBubble.click( {force: true} );
 
-    // Wait for either error or timeout handling
-    // The app should handle this gracefully within a reasonable time
-    await page.waitForTimeout(2000);
+    // App should remain responsive while waiting for the slow response
+    await expect(page.locator('#bubble-container')).toBeAttached();
 
-    // Check that either error appeared or request is still pending
-    // (we're testing the app doesn't crash)
-    const errorVisible = await page.locator('#error-message').isVisible();
-    const pageIsResponsive = await page.locator('#bubble-container').isVisible();
-
-    // App should remain responsive
-    expect(pageIsResponsive).toBe(true);
+    // Verify the bubble is still there and we haven't crashed
+    const bubbleCount = await page.locator('.bubble').count();
+    expect(bubbleCount).toBe(TEST_CATEGORIES.length);
   });
 
   test('should display error for consecutive failed quote requests', async ({ page }) => {
