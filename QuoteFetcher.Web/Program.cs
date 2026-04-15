@@ -68,7 +68,7 @@ app.Use(async (context, next) =>
         apiBaseUrl = apiBaseUrl.Split(';')[0].Trim();
     }
     context.Response.Headers["Content-Security-Policy"] =
-        $"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' {apiBaseUrl};";
+        $"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' {apiBaseUrl}; object-src 'none'; base-uri 'self'; frame-ancestors 'none';";
 
     await next();
 });
