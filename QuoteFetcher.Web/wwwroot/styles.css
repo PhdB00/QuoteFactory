@@ -21,7 +21,8 @@ html {
 #bubble-container {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: 100vh;
+    overflow: hidden;
 }
 
 /* Individual bubble styles */
@@ -132,6 +133,11 @@ html {
     animation: bubble-click 0.3s ease;
 }
 
+.bubble.exploding {
+    opacity: 0;
+    pointer-events: none;
+}
+
 @keyframes bubble-click {
     0% {
         box-shadow: 0 0.25rem 0.9375rem rgba(102, 126, 234, 0.4);
@@ -141,6 +147,39 @@ html {
     }
     100% {
         box-shadow: 0 0.25rem 0.9375rem rgba(102, 126, 234, 0.4);
+    }
+}
+
+.bubble-explosion {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.bubble-fragment {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95) 0%, rgba(118, 75, 162, 0.85) 55%, rgba(102, 126, 234, 0.75) 100%);
+    border-radius: 0.25rem;
+    opacity: 0;
+    animation-name: bubble-fragment-scatter;
+    animation-timing-function: cubic-bezier(0.08, 0.75, 0.2, 1);
+    animation-fill-mode: forwards;
+}
+
+@keyframes bubble-fragment-scatter {
+    0% {
+        transform: translate3d(-50%, -50%, 0) rotate(0deg) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate3d(calc(-50% + var(--fragment-x)), calc(-50% + var(--fragment-y)), 0) rotate(var(--fragment-rotation)) scale(0.25);
+        opacity: 0;
     }
 }
 

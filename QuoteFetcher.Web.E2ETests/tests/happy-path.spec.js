@@ -43,6 +43,12 @@ async function observeClickedClassAppliedOnce(bubbleLocator, timeoutMs = 1500) {
   }, timeoutMs);
 }
 
+async function waitForExplosionFragments(page, timeoutMs = 2000) {
+  await expect.poll(async () => {
+    return await page.locator('.bubble-fragment').count();
+  }, { timeout: timeoutMs }).toBeGreaterThan(0);
+}
+
 test.describe('Happy Path Tests', () => {
 
   test('should load application successfully', async ({ page }) => {
@@ -120,6 +126,7 @@ test.describe('Happy Path Tests', () => {
 
     // Verify bubble click feedback is applied (transient class)
     expect(await clickedClassObserved).toBe(true);
+    await waitForExplosionFragments(page);
 
     // Wait for crawl to appear
     await waitForCrawl(page);
@@ -130,9 +137,16 @@ test.describe('Happy Path Tests', () => {
 
     // Verify crawl contains the quote text
     await expect(crawl).toContainText(TEST_QUOTE_RESPONSE.Value);
+
+    // Verify the same category bubble respawns after explosion completes
+    const respawnedAnimalBubble = getBubbleByCategory(page, 'animal');
+    await expect(respawnedAnimalBubble).toBeVisible({ timeout: 5000 });
+    await expect.poll(async () => {
+      return await page.locator('.bubble-fragment').count();
+    }, { timeout: 5000 }).toBe(0);
   });
 
-  test('should apply temporary clicked visual state when bubble is clicked', async ({ page }) => {
+  test('should apply temporary clicked visual state before explosion and respawn', async ({ page }) => {
     // Mock APIs using helper function for consistency
     await mockApiResponse(page, '/quote_category', TEST_CATEGORIES);
     await mockApiResponse(page, '/quote?category=animal', TEST_QUOTE_RESPONSE);
@@ -149,10 +163,10 @@ test.describe('Happy Path Tests', () => {
     // Verify clicked class appears quickly
     expect(await clickedClassObserved).toBe(true);
 
-    // Verify clicked class is removed after the temporary feedback window
-    await expect.poll(async () => {
-      return animalBubble.evaluate((el) => el.classList.contains('clicked'));
-    }, { timeout: 3000 }).toBe(false);
+    // Verify explosion happens and the bubble category returns after respawn
+    await waitForExplosionFragments(page, 2500);
+    const respawnedAnimalBubble = getBubbleByCategory(page, 'animal');
+    await expect(respawnedAnimalBubble).toBeVisible({ timeout: 5000 });
   });
 
   test('should display multiple crawls when multiple bubbles are clicked', async ({ page }) => {

@@ -19,12 +19,16 @@ public static class QuotesConfiguration
     // duplicate probability when clients request multiple quotes.
     private static List<QuoteEntity> LoadQuotesFromFile(string filePath)
     {
-        if (!File.Exists(filePath))
+        var resolvedPath = ResolveQuotesFilePath(filePath);
+        if (resolvedPath is null)
         {
-            throw new FileNotFoundException($"Quotes file not found at: {filePath}");
+            var baseDirectoryPath = Path.Combine(AppContext.BaseDirectory, filePath);
+            var currentDirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), filePath);
+            throw new FileNotFoundException(
+                $"Quotes file not found. Tried: '{filePath}', '{baseDirectoryPath}', '{currentDirectoryPath}'.");
         }
 
-        return File.ReadAllLines(filePath)
+        return File.ReadAllLines(resolvedPath)
             .Where(line => !string.IsNullOrWhiteSpace(line))
             .Select(line =>
             {
@@ -42,5 +46,27 @@ public static class QuotesConfiguration
                 };
             })
             .ToList();
+    }
+
+    private static string? ResolveQuotesFilePath(string filePath)
+    {
+        if (File.Exists(filePath))
+        {
+            return filePath;
+        }
+
+        var baseDirectoryPath = Path.Combine(AppContext.BaseDirectory, filePath);
+        if (File.Exists(baseDirectoryPath))
+        {
+            return baseDirectoryPath;
+        }
+
+        var currentDirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), filePath);
+        if (File.Exists(currentDirectoryPath))
+        {
+            return currentDirectoryPath;
+        }
+
+        return null;
     }
 }

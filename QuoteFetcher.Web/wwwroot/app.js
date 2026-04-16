@@ -15,7 +15,8 @@ function createApp() {
         bubbles: [],
         spatialGrid: null,
         animationFrameId: null,
-        nextBubbleId: 0
+        nextBubbleId: 0,
+        isShuttingDown: false
     };
     const ui = createUi();
 
@@ -67,7 +68,8 @@ function createApp() {
             category,
             x,
             y,
-            onBubbleClick: handleBubbleClick
+            onBubbleClick: handleBubbleClick,
+            onBubbleExploded: handleBubbleExploded
         });
         state.bubbles.push(bubble);
     }
@@ -82,14 +84,36 @@ function createApp() {
         }
     }
 
+    function handleBubbleExploded(bubble) {
+        if (state.isShuttingDown) {
+            return;
+        }
+
+        state.bubbles = state.bubbles.filter((existingBubble) => existingBubble !== bubble);
+        bubble.destroy();
+        createNonOverlappingBubble(bubble.category);
+    }
+
     function animate() {
-        state.bubbles.forEach((bubble) => bubble.update());
+        state.bubbles.forEach((bubble) => {
+            if (bubble.isActive()) {
+                bubble.update();
+            }
+        });
 
         state.spatialGrid.clear();
-        state.bubbles.forEach((bubble) => state.spatialGrid.insert(bubble));
+        state.bubbles.forEach((bubble) => {
+            if (bubble.isActive()) {
+                state.spatialGrid.insert(bubble);
+            }
+        });
 
         const checkedPairs = new Set();
         state.bubbles.forEach((bubble) => {
+            if (!bubble.isActive()) {
+                return;
+            }
+
             const nearby = state.spatialGrid.getNearby(bubble);
             nearby.forEach((other) => {
                 if (bubble === other) {
@@ -130,7 +154,6 @@ function createApp() {
             state.apiBaseUrl = await loadConfig();
             const categories = await getCategories(state.apiBaseUrl);
             categories.forEach((category) => createNonOverlappingBubble(category));
-
             state.spatialGrid = new SpatialGrid(BUBBLE_SIZE * 2);
             animate();
             document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -141,6 +164,8 @@ function createApp() {
     }
 
     function cleanup() {
+        state.isShuttingDown = true;
+
         if (state.animationFrameId !== null) {
             cancelAnimationFrame(state.animationFrameId);
             state.animationFrameId = null;

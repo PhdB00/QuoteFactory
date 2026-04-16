@@ -1,8 +1,11 @@
 const BUBBLE_SPEED = 2;
 export const BUBBLE_SIZE = 60;
+const CLICK_FEEDBACK_DURATION_MS = 300;
+const EXPLOSION_DURATION_MS = 900;
+const EXPLOSION_FRAGMENT_COUNT = 18;
 
 export class Bubble {
-    constructor({ id, category, x, y, onBubbleClick }) {
+    constructor({ id, category, x, y, onBubbleClick, onBubbleExploded }) {
         this.id = id;
         this.category = category;
         this.x = x;
@@ -10,6 +13,10 @@ export class Bubble {
         this.vx = (Math.random() - 0.5) * BUBBLE_SPEED;
         this.vy = (Math.random() - 0.5) * BUBBLE_SPEED;
         this.onBubbleClick = onBubbleClick;
+        this.onBubbleExploded = onBubbleExploded;
+        this.state = 'active';
+        this.explosionTimeoutId = null;
+        this.explosionElement = null;
         this.element = this.createElement();
         this.radius = this.element.offsetWidth / 2;
     }
@@ -33,15 +40,86 @@ export class Bubble {
     }
 
     async handleClick() {
+        if (!this.isActive()) {
+            return;
+        }
+
+        this.state = 'clicked';
         this.element.classList.add('clicked');
-        setTimeout(() => this.element.classList.remove('clicked'), 300);
+        setTimeout(() => {
+            if (this.element) {
+                this.element.classList.remove('clicked');
+            }
+
+            this.startExplosion();
+        }, CLICK_FEEDBACK_DURATION_MS);
 
         if (this.onBubbleClick) {
-            await this.onBubbleClick(this);
+            Promise.resolve(this.onBubbleClick(this)).catch((error) => {
+                console.error('Error processing bubble click callback:', error);
+            });
         }
     }
 
+    startExplosion() {
+        if (this.state !== 'clicked' || !this.element) {
+            return;
+        }
+
+        this.state = 'exploding';
+        this.element.classList.add('exploding');
+
+        const explosionElement = document.createElement('div');
+        explosionElement.className = 'bubble-explosion';
+        explosionElement.style.transform = `translate3d(${this.getCenterX()}px, ${this.getCenterY()}px, 0)`;
+
+        const maxDistance = Math.max(window.innerWidth, window.innerHeight) * 1.25;
+        for (let index = 0; index < EXPLOSION_FRAGMENT_COUNT; index++) {
+            const fragment = document.createElement('span');
+            fragment.className = 'bubble-fragment';
+
+            const angle = Math.random() * Math.PI * 2;
+            const distance = maxDistance * (0.6 + Math.random() * 0.5);
+            const fragmentSize = 4 + Math.random() * 6;
+
+            fragment.style.setProperty('--fragment-x', `${Math.cos(angle) * distance}px`);
+            fragment.style.setProperty('--fragment-y', `${Math.sin(angle) * distance}px`);
+            fragment.style.setProperty('--fragment-rotation', `${(Math.random() - 0.5) * 1080}deg`);
+            fragment.style.width = `${fragmentSize}px`;
+            fragment.style.height = `${fragmentSize}px`;
+            fragment.style.animationDuration = `${EXPLOSION_DURATION_MS + Math.random() * 250}ms`;
+            explosionElement.appendChild(fragment);
+        }
+
+        const container = document.getElementById('bubble-container');
+        container.appendChild(explosionElement);
+        this.explosionElement = explosionElement;
+
+        this.element.remove();
+
+        this.explosionTimeoutId = setTimeout(() => {
+            if (explosionElement.parentNode) {
+                explosionElement.parentNode.removeChild(explosionElement);
+            }
+            this.explosionElement = null;
+            this.explosionTimeoutId = null;
+
+            this.state = 'destroyed';
+            if (this.onBubbleExploded) {
+                this.onBubbleExploded(this);
+            }
+        }, EXPLOSION_DURATION_MS + 300);
+    }
+
+    isActive() {
+        return this.state === 'active';
+    }
+
     update() {
+        if (!this.isActive()) {
+            return;
+        }
+
         this.x += this.vx;
         this.y += this.vy;
 
@@ -70,12 +148,24 @@ export class Bubble {
     }
 
     destroy() {
+        this.state = 'destroyed';
+
+        if (this.explosionTimeoutId !== null) {
+            clearTimeout(this.explosionTimeoutId);
+            this.explosionTimeoutId = null;
+        }
+
         if (this.boundClickHandler) {
             this.element.removeEventListener('click', this.boundClickHandler);
         }
 
         if (this.element.parentNode) {
             this.element.parentNode.removeChild(this.element);
+        }
+
+        if (this.explosionElement && this.explosionElement.parentNode) {
+            this.explosionElement.parentNode.removeChild(this.explosionElement);
+            this.explosionElement = null;
         }
     }
 }

@@ -120,8 +120,13 @@ test.describe('Error Scenario Tests', () => {
     const errorText = await getErrorMessage(page);
     expect(errorText).toMatch(/Failed to fetch quote|Unable to connect/i);
 
-    // Verify bubble remains on screen (not destroyed)
-    await expect(animalBubble).toBeVisible();
+    // Verify bubble explodes and same category respawns even on error
+    await expect.poll(async () => {
+      return await page.locator('.bubble-fragment').count();
+    }, { timeout: 3000 }).toBeGreaterThan(0);
+
+    const respawnedAnimalBubble = getBubbleByCategory(page, 'animal');
+    await expect(respawnedAnimalBubble).toBeVisible({ timeout: 5000 });
   });
 
   test('should display error when quote endpoint returns 404', async ({ page }) => {
