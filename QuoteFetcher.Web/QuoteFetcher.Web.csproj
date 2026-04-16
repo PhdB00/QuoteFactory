@@ -6,10 +6,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="..\QuoteBubbles_PRD.md">
-      <Link>QuoteBubbles_PRD.md</Link>
-    </Content>
-  </ItemGroup>
-
 </Project>
