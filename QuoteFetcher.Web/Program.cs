@@ -1,3 +1,5 @@
+using QuoteFetcher.Web.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Enable CORS for API communication
@@ -18,7 +20,26 @@ builder.Services.AddCors(options =>
 // Add health checks
 builder.Services.AddHealthChecks();
 
+builder.Services
+    .AddOptions<SecurityHeaderOptions>()
+    .Bind(builder.Configuration.GetSection(SecurityHeaderOptions.SectionName))
+    .ValidateDataAnnotations()
+    .Validate(
+        options => SecurityHeaderOptions.IsValidXFrameOptions(options.XFrameOptions),
+        "SecurityHeaders:XFrameOptions must be DENY or SAMEORIGIN.")
+    .Validate(
+        options => SecurityHeaderOptions.IsValidXContentTypeOptions(options.XContentTypeOptions),
+        "SecurityHeaders:XContentTypeOptions must be nosniff.")
+    .Validate(
+        options => SecurityHeaderOptions.IsValidReferrerPolicy(options.ReferrerPolicy),
+        "SecurityHeaders:ReferrerPolicy has an invalid value.")
+    .Validate(
+        options => SecurityHeaderOptions.IsValidContentSecurityPolicy(options.ContentSecurityPolicy),
+        "SecurityHeaders:ContentSecurityPolicy is missing required directives.")
+    .ValidateOnStart();
+
 var app = builder.Build();
+var securityHeaders = app.Services.GetRequiredService<Microsoft.Extensions.Options.IOptions<SecurityHeaderOptions>>().Value;
 
 // Environment-specific configuration
 if (app.Environment.IsDevelopment())
@@ -52,23 +73,10 @@ else
 // Security headers middleware
 app.Use(async (HttpContext context, RequestDelegate next) =>
 {
-    // Prevent clickjacking
-    context.Response.Headers["X-Frame-Options"] = "DENY";
-
-    // Prevent MIME sniffing
-    context.Response.Headers["X-Content-Type-Options"] = "nosniff";
-
-    // Referrer policy
-    context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
-
-    // Content Security Policy
-    var apiBaseUrl = context.RequestServices.GetRequiredService<IConfiguration>()["ApiBaseUrl"] ?? "http://localhost:5074";
-    if (apiBaseUrl.Contains(";"))
-    {
-        apiBaseUrl = apiBaseUrl.Split(';')[0].Trim();
-    }
-    context.Response.Headers["Content-Security-Policy"] =
-        $"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' {apiBaseUrl}; object-src 'none'; base-uri 'self'; frame-ancestors 'none';";
+    context.Response.Headers["X-Frame-Options"] = securityHeaders.XFrameOptions;
+    context.Response.Headers["X-Content-Type-Options"] = securityHeaders.XContentTypeOptions;
+    context.Response.Headers["Referrer-Policy"] = securityHeaders.ReferrerPolicy;
+    context.Response.Headers["Content-Security-Policy"] = securityHeaders.ContentSecurityPolicy;
 
     await next(context);
 });
