@@ -1,6 +1,6 @@
 import { loadConfig } from './config-client.js';
 import { getCategories, getLogMessage, getQuote, getUserMessage } from './api-client.js';
-import { Bubble, BUBBLE_SIZE, checkCollision, resolveCollision } from './bubble-model.js';
+import { Bubble, BUBBLE_SIZE, checkCollision, createExplosionAudioManager, resolveCollision, resolveBubbleVfxConfig } from './bubble-model.js';
 import { SpatialGrid } from './spatial-grid.js';
 import { createUi } from './ui.js';
 
@@ -12,6 +12,8 @@ const MAX_PLACEMENT_ATTEMPTS = 50;
 function createApp() {
     const state = {
         apiBaseUrl: '',
+        bubbleVfxConfig: null,
+        explosionAudioManager: null,
         bubbles: [],
         spatialGrid: null,
         animationFrameId: null,
@@ -69,7 +71,10 @@ function createApp() {
             x,
             y,
             onBubbleClick: handleBubbleClick,
-            onBubbleExploded: handleBubbleExploded
+            onBubbleRespawnRequested: handleBubbleRespawnRequested,
+            onBubbleExploded: handleBubbleExploded,
+            bubbleVfxConfig: state.bubbleVfxConfig,
+            explosionAudioManager: state.explosionAudioManager
         });
         state.bubbles.push(bubble);
     }
@@ -84,6 +89,14 @@ function createApp() {
         }
     }
 
+    function handleBubbleRespawnRequested(bubble) {
+        if (state.isShuttingDown) {
+            return;
+        }
+
+        createNonOverlappingBubble(bubble.category);
+    }
+
     function handleBubbleExploded(bubble) {
         if (state.isShuttingDown) {
             return;
@@ -91,7 +104,6 @@ function createApp() {
 
         state.bubbles = state.bubbles.filter((existingBubble) => existingBubble !== bubble);
         bubble.destroy();
-        createNonOverlappingBubble(bubble.category);
     }
 
     function animate() {
@@ -151,7 +163,10 @@ function createApp() {
 
     async function initialize() {
         try {
-            state.apiBaseUrl = await loadConfig();
+            const config = await loadConfig();
+            state.apiBaseUrl = config.apiBaseUrl;
+            state.bubbleVfxConfig = resolveBubbleVfxConfig(config.bubbleVfx);
+            state.explosionAudioManager = createExplosionAudioManager(state.bubbleVfxConfig);
             const categories = await getCategories(state.apiBaseUrl);
             categories.forEach((category) => createNonOverlappingBubble(category));
             state.spatialGrid = new SpatialGrid(BUBBLE_SIZE * 2);

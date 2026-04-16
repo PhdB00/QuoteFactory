@@ -154,33 +154,49 @@ html {
     position: absolute;
     left: 0;
     top: 0;
-    width: 0;
-    height: 0;
+    width: 0.0625rem;
+    height: 0.0625rem;
     pointer-events: none;
     z-index: 20;
+    overflow: visible;
+}
+
+.bubble-explosion-flash {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 5.25rem;
+    height: 5.25rem;
+    transform: translate3d(-50%, -50%, 0) scale(calc(1 + var(--flash-strength, 1) * 0.35));
+    background: radial-gradient(circle, rgba(255, 250, 210, 0.95) 0%, rgba(255, 196, 90, 0.7) 45%, rgba(255, 124, 38, 0.28) 70%, rgba(255, 88, 24, 0) 100%);
+    opacity: 0;
+    mix-blend-mode: screen;
 }
 
 .bubble-fragment {
     position: absolute;
     left: 0;
     top: 0;
-    background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95) 0%, rgba(118, 75, 162, 0.85) 55%, rgba(102, 126, 234, 0.75) 100%);
-    border-radius: 0.25rem;
+    transform: translate3d(0, 0, 0);
     opacity: 0;
-    animation-name: bubble-fragment-scatter;
-    animation-timing-function: cubic-bezier(0.08, 0.75, 0.2, 1);
-    animation-fill-mode: forwards;
+    will-change: transform, opacity, background-color;
 }
 
-@keyframes bubble-fragment-scatter {
-    0% {
-        transform: translate3d(-50%, -50%, 0) rotate(0deg) scale(1);
-        opacity: 1;
-    }
-    100% {
-        transform: translate3d(calc(-50% + var(--fragment-x)), calc(-50% + var(--fragment-y)), 0) rotate(var(--fragment-rotation)) scale(0.25);
-        opacity: 0;
-    }
+.bubble-particle-chunks {
+    box-shadow: 0 0 0.8125rem rgba(255, 110, 32, 0.42);
+}
+
+.bubble-particle-sparks {
+    box-shadow: 0 0 0.625rem rgba(255, 194, 80, 0.5);
+}
+
+.bubble-particle-circle,
+.bubble-particle-point {
+    border-radius: 50%;
+}
+
+.bubble-particle-streak {
+    border-radius: 999px;
 }
 
 /* Responsive design */

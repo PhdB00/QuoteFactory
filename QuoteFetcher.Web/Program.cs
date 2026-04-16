@@ -120,6 +120,7 @@ app.MapHealthChecks("/health/ready", new HealthCheckOptions
 app.MapGet("/api/config", (IConfiguration config) =>
 {
     var apiBaseUrl = config["ApiBaseUrl"] ?? "http://localhost:5074";
+    var bubbleVfxSection = config.GetSection("BubbleVfx");
 
     // Parse the URL to ensure we return a clean base URL
     if (apiBaseUrl.Contains(";"))
@@ -127,9 +128,25 @@ app.MapGet("/api/config", (IConfiguration config) =>
         apiBaseUrl = apiBaseUrl.Split(';')[0].Trim();
     }
 
+    var preset = bubbleVfxSection["Preset"] ?? "arcade_punchy";
+    var seed = bubbleVfxSection.GetValue<int?>("Seed") ?? 1337;
+    var allowAudioOverlap = bubbleVfxSection.GetValue<bool?>("AllowAudioOverlap") ?? false;
+    var respawnDelayMs = bubbleVfxSection.GetValue<int?>("RespawnDelayMs") ?? 550;
+    var explosionDurationMs = bubbleVfxSection.GetValue<int?>("ExplosionDurationMs") ?? 600;
+    var clickFeedbackDurationMs = bubbleVfxSection.GetValue<int?>("ClickFeedbackDurationMs") ?? 100;
+
     return Results.Json(new
     {
-        apiBaseUrl = apiBaseUrl
+        apiBaseUrl = apiBaseUrl,
+        bubbleVfx = new
+        {
+            preset,
+            seed,
+            allowAudioOverlap,
+            respawnDelayMs,
+            explosionDurationMs,
+            clickFeedbackDurationMs
+        }
     });
 });
 
