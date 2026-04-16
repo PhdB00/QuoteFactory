@@ -81,6 +81,28 @@ async function mockApiTimeout(page, endpoint) {
 }
 
 /**
+ * Mock API response with an artificial delay
+ * @param {import('@playwright/test').Page} page - Playwright page object
+ * @param {string} endpoint - API endpoint path
+ * @param {any} response - Response body to return
+ * @param {number} delayMs - Delay in milliseconds before fulfilling
+ * @param {number} statusCode - HTTP status code (default: 200)
+ */
+async function mockApiDelayedResponse(page, endpoint, response, delayMs, statusCode = 200) {
+  const apiBaseUrl = getApiBaseUrl();
+  const fullUrl = `${apiBaseUrl}${endpoint}`;
+
+  await page.route(fullUrl, async (route) => {
+    await new Promise(resolve => setTimeout(resolve, delayMs));
+    await route.fulfill({
+      status: statusCode,
+      contentType: 'application/json',
+      body: JSON.stringify(response),
+    });
+  });
+}
+
+/**
  * Wait for bubble elements to appear
  * @param {import('@playwright/test').Page} page - Playwright page object
  * @param {number} count - Expected number of bubbles
@@ -263,6 +285,7 @@ module.exports = {
   mockApiResponseRaw,
   blockApiRequests,
   mockApiTimeout,
+  mockApiDelayedResponse,
   waitForBubbles,
   getBubbleByCategory,
   clickBubbleAndWaitForQuote,

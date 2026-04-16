@@ -3,6 +3,7 @@ const {
   mockApiResponse,
   mockApiResponseRaw,
   blockApiRequests,
+  mockApiDelayedResponse,
   waitForBubbles,
   getBubbleByCategory,
   getErrorMessage,
@@ -204,30 +205,48 @@ test.describe('Error Scenario Tests', () => {
     await page.goto('/');
     await waitForBubbles(page, TEST_CATEGORIES.length);
 
-    // Set up a very slow response (simulating timeout)
-    const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:5074';
-    await page.route(`${apiBaseUrl}/quote?category=animal`, async (route) => {
-      // Delay significantly to simulate slow network
-      await new Promise(resolve => setTimeout(resolve, 10000));
-      await route.fulfill({
-        status: 200,
-        body: JSON.stringify({ Value: 'Too slow' })
-      });
-    });
+    // Delay quote response beyond client timeout threshold
+    await mockApiDelayedResponse(
+      page,
+      '/quote?category=animal',
+      { Value: 'Too slow' },
+      12000
+    );
 
     // Click a bubble
     const animalBubble = getBubbleByCategory(page, 'animal');
-    
-    // Use Promise.all to handle the click and the subsequent wait for response or error
-    // Since the app doesn't have a timeout, we'll wait for a bit and check responsiveness
+    const startTime = Date.now();
     await animalBubble.click( {force: true} );
 
-    // App should remain responsive while waiting for the slow response
-    await expect(page.locator('#bubble-container')).toBeAttached();
+    // Verify timeout error appears and happens within timeout window
+    const errorMessage = page.locator('#error-message');
+    await expect(errorMessage).toBeVisible({ timeout: 12000 });
 
-    // Verify the bubble is still there and we haven't crashed
+    const elapsedMs = Date.now() - startTime;
+    expect(elapsedMs).toBeLessThan(11000);
+
+    const errorText = await getErrorMessage(page);
+    expect(errorText).toContain('request timed out');
+    expect(errorText).toContain('Unable to fetch quote');
+  });
+
+  test('should display timeout error when category fetch exceeds timeout on load', async ({ page }) => {
+    await mockApiDelayedResponse(page, '/quote_category', TEST_CATEGORIES, 12000);
+
+    const startTime = Date.now();
+    await page.goto('/');
+
+    const errorMessage = page.locator('#error-message');
+    await expect(errorMessage).toBeVisible({ timeout: 12000 });
+
+    const elapsedMs = Date.now() - startTime;
+    expect(elapsedMs).toBeLessThan(11000);
+
+    const errorText = await getErrorMessage(page);
+    expect(errorText).toContain('Unable to load categories: request timed out');
+
     const bubbleCount = await page.locator('.bubble').count();
-    expect(bubbleCount).toBe(TEST_CATEGORIES.length);
+    expect(bubbleCount).toBe(0);
   });
 
   test('should display error for consecutive failed quote requests', async ({ page }) => {
@@ -245,22 +264,15 @@ test.describe('Error Scenario Tests', () => {
 
     // Click first bubble and wait for network request to complete
     const animalBubble = getBubbleByCategory(page, 'animal');
-    const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:5074';
-
-    await Promise.all([
-      page.waitForResponse(resp => resp.url().includes('/quote?category=animal')),
-      animalBubble.click({ force: true })
-    ]);
+    await animalBubble.click({ force: true });
 
     // Wait for error
     await expect(page.locator('#error-message')).toBeVisible({ timeout: 5000 });
 
     // Click second bubble
     const celebrityBubble = getBubbleByCategory(page, 'celebrity');
-    await Promise.all([
-      page.waitForResponse(resp => resp.url().includes('/quote?category=celebrity')),
-      celebrityBubble.click({ force: true })
-    ]);
+    await celebrityBubble.click({ force: true });
+    await expect(page.locator('#error-message')).toBeVisible({ timeout: 5000 });
 
     // Error should still appear (or be visible)
     const errorText = await getErrorMessage(page);

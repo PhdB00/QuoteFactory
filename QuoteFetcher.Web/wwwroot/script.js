@@ -4,6 +4,7 @@ let API_BASE_URL = '';
 const BUBBLE_SPEED = 2;
 const BUBBLE_SIZE = 60; // Approximate radius for collision detection
 const ERROR_DISPLAY_DURATION = 5000; // 5 seconds
+const REQUEST_TIMEOUT_MS = 8000;
 
 // State
 let bubbles = [];
@@ -11,6 +12,32 @@ let animationFrameId = null;
 let spatialGrid = null;
 let errorTimeoutId = null;
 let nextBubbleId = 0;
+
+function createTimeoutError(timeoutMs) {
+    const error = new Error(`Request timed out after ${timeoutMs}ms`);
+    error.name = 'TimeoutError';
+    return error;
+}
+
+function isTimeoutError(error) {
+    return error && error.name === 'TimeoutError';
+}
+
+async function fetchWithTimeout(url, options = {}, timeoutMs = REQUEST_TIMEOUT_MS) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+        return await fetch(url, { ...options, signal: controller.signal });
+    } catch (error) {
+        if (error && error.name === 'AbortError') {
+            throw createTimeoutError(timeoutMs);
+        }
+        throw error;
+    } finally {
+        clearTimeout(timeoutId);
+    }
+}
 
 // Bubble class
 class Bubble {
@@ -44,7 +71,9 @@ class Bubble {
         setTimeout(() => this.element.classList.remove('clicked'), 300);
 
         try {
-            const response = await fetch(`${API_BASE_URL}/quote?category=${encodeURIComponent(this.category)}`);
+            const response = await fetchWithTimeout(
+                `${API_BASE_URL}/quote?category=${encodeURIComponent(this.category)}`
+            );
             if (!response.ok) {
                 showError(`Unable to fetch quote. Please try again.`);
                 return;
@@ -55,6 +84,11 @@ class Bubble {
             displayCrawl(quoteText);
         } catch (error) {
             console.error('Error fetching quote:', error.message || 'Unknown error');
+            if (isTimeoutError(error)) {
+                showError('Unable to fetch quote: request timed out. Please try again.');
+                return;
+            }
+
             showError('Unable to connect to the quote service. Please check if the API is running.');
         }
     }
@@ -296,7 +330,7 @@ function showError(message) {
 // Load configuration from server
 async function loadConfig() {
     try {
-        const response = await fetch('/api/config');
+        const response = await fetchWithTimeout('/api/config');
         if (!response.ok) {
             console.warn('Failed to load config, using relative URLs');
             return '';
@@ -304,6 +338,11 @@ async function loadConfig() {
         const config = await response.json();
         return config.apiBaseUrl || '';
     } catch (error) {
+        if (isTimeoutError(error)) {
+            console.warn('Config request timed out, using relative URLs');
+            return '';
+        }
+
         console.warn('Failed to load config, using relative URLs:', error);
         return '';
     }
@@ -315,7 +354,18 @@ async function initialize() {
         // Load configuration first
         API_BASE_URL = await loadConfig();
 
-        const response = await fetch(`${API_BASE_URL}/quote_category`);
+        let response;
+        try {
+            response = await fetchWithTimeout(`${API_BASE_URL}/quote_category`);
+        } catch (error) {
+            if (isTimeoutError(error)) {
+                showError('Unable to load categories: request timed out. Please refresh the page.');
+                console.error('Category request timed out');
+                return;
+            }
+            throw error;
+        }
+
         if (!response.ok) {
             showError(`Unable to load categories. Please refresh the page.`);
             console.error('Failed to fetch categories');
