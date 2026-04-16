@@ -42,9 +42,14 @@ The `QuoteFetcher.Api` project in this solution is a **recreation** of the organ
    - Handles duplicate detection and quote aggregation
 
 3. **QuoteFetcher.Client.Console**
-   - Interactive console application
+   - Interactive console application, the original assessment required a console app only
    - Menu-driven interface for end users
    - Displays quotes fetched from the API
+
+4. **QuoteFetcher.Web** (QuoteFactory.Web)
+   - ASP.NET Core web host for the browser UI (`wwwroot`)
+   - Displays the Quote Categories as Bubbles on the webpage
+   - When a user clicks a bubble a quotation is retrieved from the API and displayed on a screen in a crawl-style 
 
 #### Test Projects (`tst/`)
 
@@ -52,6 +57,7 @@ The `QuoteFetcher.Api` project in this solution is a **recreation** of the organ
 2. **QuoteFetcher.Application.UnitTests** - Unit tests for application layer
 3. **QuoteFetcher.Api.IntegrationTests** - Integration tests for the API
 4. **QuoteFetcher.ArchitectureTests** - Architecture compliance tests using NetArchTest
+5. **QuoteFetcher.Web.E2ETests** - Playwright end-to-end tests for `QuoteFetcher.Web` (Chromium, Firefox, mobile emulation)
 
 ## Key Design Decisions
 
@@ -108,7 +114,7 @@ The `QuoteFetcher.Api` project in this solution is a **recreation** of the organ
 **Structure**:
 - **API Layer**: Minimal API endpoints
 - **Application Layer**: Business logic, MediatR handlers, API integration
-- **Presentation Layer**: Console UI with menu system
+- **Presentation Layer**: Console UI and browser-based Quote Bubbles UI
 - **Abstractions**: Interfaces for dependency inversion (`IQuoteApi`, `IQuoteHashSet`)
 
 ### 6. Validation
@@ -144,6 +150,7 @@ The `QuoteFetcher.Api` project in this solution is a **recreation** of the organ
 - **Unit Tests**: Test business logic in isolation with mocks
 - **Integration Tests**: Test API endpoints with WebApplicationFactory
 - **Architecture Tests**: Enforce architectural boundaries and dependencies
+- **End-to-End Tests**: Validate browser UX, error handling, security headers, and health endpoints via Playwright
 
 ## API Quirks Replicated
 
@@ -158,7 +165,11 @@ The recreated API intentionally includes these quirks from the original assessme
 ## Running the Solution
 
 ### Prerequisites
-- .NET 9.0 SDK
+- .NET SDK(s) required by the projects in this solution:
+  - `net9.0` projects (API, application, console, test projects)
+  - `net10.0` project (`QuoteFetcher.Web`)
+- Node.js + npm (for `QuoteFetcher.Web.E2ETests`)
+- Playwright browsers (`npx playwright install`)
 
 ### Running the API
 ```bash
@@ -172,9 +183,25 @@ cd QuoteFetcher.Client.Console
 dotnet run
 ```
 
+### Running the Web App (QuoteFactory.Web / QuoteFetcher.Web)
+```bash
+cd QuoteFetcher.Web
+dotnet run
+```
+
+By default, the web host listens on `http://localhost:5001` and reads the API base URL from `ApiBaseUrl` (default: `http://localhost:5074`).
+
 ### Running Tests
 ```bash
 dotnet test
+```
+
+### Running Web E2E Tests
+```bash
+cd QuoteFetcher.Web.E2ETests
+npm install
+npx playwright install
+npm test
 ```
 
 ## Lessons Learned from the Assessment
