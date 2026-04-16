@@ -18,6 +18,31 @@ const TEST_QUOTE_RESPONSE = {
   Value: 'This is a test quote from the test suite.'
 };
 
+async function observeClickedClassAppliedOnce(bubbleLocator, timeoutMs = 1500) {
+  return bubbleLocator.evaluate((el, timeout) => {
+    return new Promise((resolve) => {
+      if (el.classList.contains('clicked')) {
+        resolve(true);
+        return;
+      }
+
+      const observer = new MutationObserver(() => {
+        if (el.classList.contains('clicked')) {
+          observer.disconnect();
+          resolve(true);
+        }
+      });
+
+      observer.observe(el, { attributes: true, attributeFilter: ['class'] });
+
+      setTimeout(() => {
+        observer.disconnect();
+        resolve(false);
+      }, timeout);
+    });
+  }, timeoutMs);
+}
+
 test.describe('Happy Path Tests', () => {
 
   test('should load application successfully', async ({ page }) => {
@@ -90,7 +115,11 @@ test.describe('Happy Path Tests', () => {
 
     // Click the animal bubble
     const animalBubble = getBubbleByCategory(page, 'animal');
+    const clickedClassObserved = observeClickedClassAppliedOnce(animalBubble, 1500);
     await animalBubble.click( {force: true} );
+
+    // Verify bubble click feedback is applied (transient class)
+    expect(await clickedClassObserved).toBe(true);
 
     // Wait for crawl to appear
     await waitForCrawl(page);
@@ -101,14 +130,29 @@ test.describe('Happy Path Tests', () => {
 
     // Verify crawl contains the quote text
     await expect(crawl).toContainText(TEST_QUOTE_RESPONSE.Value);
+  });
 
-    // Verify bubble has visual feedback (clicked class appears)
-    // Note: This may be temporary, so we just check it was triggered
-    const hasClickedClass = await animalBubble.evaluate((el) => {
-      return el.classList.contains('clicked');
-    });
-    // The clicked class may have already been removed, so we just verify crawl appeared
-    expect(hasClickedClass || true).toBe(true);
+  test('should apply temporary clicked visual state when bubble is clicked', async ({ page }) => {
+    // Mock APIs using helper function for consistency
+    await mockApiResponse(page, '/quote_category', TEST_CATEGORIES);
+    await mockApiResponse(page, '/quote?category=animal', TEST_QUOTE_RESPONSE);
+
+    // Navigate and wait for bubbles
+    await page.goto('/');
+    await waitForBubbles(page, TEST_CATEGORIES.length);
+
+    // Click the animal bubble
+    const animalBubble = getBubbleByCategory(page, 'animal');
+    const clickedClassObserved = observeClickedClassAppliedOnce(animalBubble, 1500);
+    await animalBubble.click({ force: true });
+
+    // Verify clicked class appears quickly
+    expect(await clickedClassObserved).toBe(true);
+
+    // Verify clicked class is removed after the temporary feedback window
+    await expect.poll(async () => {
+      return animalBubble.evaluate((el) => el.classList.contains('clicked'));
+    }, { timeout: 3000 }).toBe(false);
   });
 
   test('should display multiple crawls when multiple bubbles are clicked', async ({ page }) => {
