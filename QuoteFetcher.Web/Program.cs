@@ -1,4 +1,7 @@
 using QuoteFetcher.Web.Configuration;
+using QuoteFetcher.Web.HealthChecks;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +20,20 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Add health checks
-builder.Services.AddHealthChecks();
+builder.Services.AddHttpClient("ReadinessChecks", client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(3);
+});
+
+// Add health checks with explicit liveness/readiness tagging
+builder.Services.AddHealthChecks()
+    .AddCheck(
+        "self",
+        () => HealthCheckResult.Healthy("Web process is alive."),
+        tags: new[] { "live" })
+    .AddCheck<ApiDependencyHealthCheck>(
+        "quote-api",
+        tags: new[] { "ready" });
 
 builder.Services
     .AddOptions<SecurityHeaderOptions>()
@@ -91,8 +106,15 @@ app.UseStaticFiles();
 app.UseCors();
 
 // Health check endpoints
-app.MapHealthChecks("/health");
-app.MapHealthChecks("/health/ready");
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("live")
+});
+
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("ready")
+});
 
 // Configuration endpoint for frontend
 app.MapGet("/api/config", (IConfiguration config) =>
