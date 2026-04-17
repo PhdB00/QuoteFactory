@@ -45,11 +45,12 @@ The `QuoteFetcher.Api` project in this solution is a **recreation** of the organ
    - Interactive console application, the original assessment required a console app only
    - Menu-driven interface for end users
    - Displays quotes fetched from the API
-
+   
 4. **QuoteFetcher.Web** (QuoteFactory.Web)
    - ASP.NET Core web host for the browser UI (`wwwroot`)
    - Displays the Quote Categories as Bubbles on the webpage
    - When a user clicks a bubble a quotation is retrieved from the API and displayed on a screen in a crawl-style 
+   - This project was not part of the assessment and was created later purely for entertainment 
 
 #### Test Projects (`tst/`)
 
