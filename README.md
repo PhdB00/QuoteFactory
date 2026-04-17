@@ -50,7 +50,7 @@ The `QuoteFetcher.Api` project in this solution is a **recreation** of the organ
    - ASP.NET Core web host for the browser UI (`wwwroot`)
    - Displays the Quote Categories as Bubbles on the webpage
    - When a user clicks a bubble a quotation is retrieved from the API and displayed on a screen in a crawl-style 
-   - This project was not part of the assessment and was created later purely for entertainment 
+   - This project was not part of the assessment and was created later purely for experimentation 
 
 #### Test Projects (`tst/`)
 
